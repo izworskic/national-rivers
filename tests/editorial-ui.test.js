@@ -15,7 +15,7 @@ test("uses the editorial national-tool shell without changing the tool contract"
   assert.match(html, /<form id="loc"/);
   assert.match(html, /id="result"/);
   assert.match(html, /national-tools\.js/);
-  assert.match(html, /<link rel="canonical" href="https://chrisizworski\.com/national-tools/rivers/">/);
+  assert.ok(html.includes('<link rel="canonical" href="https://chrisizworski.com/national-tools/rivers/">'));
 });
 
 test("editorial override keeps the quiet Michigan-style visual language", () => {
