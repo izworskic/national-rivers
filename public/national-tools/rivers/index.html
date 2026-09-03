@@ -4,11 +4,352 @@
 <meta name="description" content="Read nearby rivers with live USGS flow, change, temperature and water sensors plus historical and NOAA forecast context where available.">
 <link rel="canonical" href="https://chrisizworski.com/national-tools/rivers/"><meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="stylesheet" href="/assets/national-tools.css?v=20260901-placebar1">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://chrisizworski.com/#person","name":"Chris Izworski","url":"https://chrisizworski.com/"},{"@type":"WebSite","@id":"https://chrisizworski.com/#website","url":"https://chrisizworski.com/","name":"Chris Izworski","author":{"@id":"https://chrisizworski.com/#person"}},{"@type":"SoftwareApplication","@id":"https://chrisizworski.com/national-tools/rivers/#page","url":"https://chrisizworski.com/national-tools/rivers/","name":"U.S. River Conditions, Levels & Flow","description":"Read nearby rivers with live USGS flow, recent change, available water sensors, historical comparison and official NOAA forecast context.","dateModified":"2026-09-01","author":{"@id":"https://chrisizworski.com/#person"},"isPartOf":{"@id":"https://chrisizworski.com/#website"}}]}</script>
-</head><body>
-<header class="site-head"><div class="wrap head-in"><a class="brand" href="/">Chris Izworski</a><nav class="nav" aria-label="Primary"><a href="/national-tools/">U.S. Outdoor Tools</a><a href="/tools/">Michigan Tools</a></nav></div></header>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://chrisizworski.com/#person","name":"Chris Izworski","url":"https://chrisizworski.com/"},{"@type":"WebSite","@id":"https://chrisizworski.com/#website","url":"https://chrisizworski.com/","name":"Chris Izworski","author":{"@id":"https://chrisizworski.com/#person"}},{"@type":"SoftwareApplication","@id":"https://chrisizworski.com/national-tools/rivers/#page","url":"https://chrisizworski.com/national-tools/rivers/","name":"U.S. River Conditions, Levels & Flow","description":"Read nearby rivers with live USGS flow, recent change, available water sensors, historical comparison and official NOAA forecast context.","dateModified":"2026-09-03","author":{"@id":"https://chrisizworski.com/#person"},"isPartOf":{"@id":"https://chrisizworski.com/#website"}}]}</script>
+
+<style id="editorial-tool-ui">
+/* Editorial national-tool shell: aligned with the Michigan tools and U.S. tools directory. */
+:root{
+  --editorial-paper:#f8f6f1;
+  --editorial-card:#fff;
+  --editorial-ink:#2b2b28;
+  --editorial-muted:#6d6a63;
+  --editorial-line:#ddd7cb;
+  --editorial-green:#2c5f2d;
+  --editorial-green-dark:#214a22;
+  --editorial-green-soft:#f1f6ef;
+  --editorial-brown:#7a684c;
+  --editorial-night:#183f38;
+}
+body[data-editorial-tool-ui]{
+  margin:0!important;
+  background:var(--editorial-paper)!important;
+  color:var(--editorial-ink)!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  line-height:1.6!important;
+}
+body[data-editorial-tool-ui] a{color:var(--editorial-green)}
+body[data-editorial-tool-ui] .site-head{
+  border-bottom:1px solid #e8e4dc!important;
+  background:#fbfaf7!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] .site-head .head-in{
+  max-width:960px!important;
+  margin:0 auto!important;
+  padding:15px 20px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:20px!important;
+}
+body[data-editorial-tool-ui] .brand{
+  color:var(--editorial-ink)!important;
+  font:18px/1.3 Georgia,"Times New Roman",serif!important;
+  text-decoration:none!important;
+}
+body[data-editorial-tool-ui] .nav{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:flex-end!important;
+  gap:14px!important;
+  font:12px/1.3 Arial,sans-serif!important;
+  letter-spacing:.04em!important;
+}
+body[data-editorial-tool-ui] .nav a{
+  color:#5a5a55!important;
+  text-decoration:none!important;
+  background:none!important;
+  border:0!important;
+  padding:0!important;
+}
+body[data-editorial-tool-ui] .nav a[aria-current="page"]{color:var(--editorial-green)!important;font-weight:700!important}
+body[data-editorial-tool-ui] .wrap{max-width:920px!important}
+body[data-editorial-tool-ui] .hero{
+  background:transparent!important;
+  color:var(--editorial-ink)!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:38px 20px 0!important;
+}
+body[data-editorial-tool-ui] .hero .wrap{padding:0!important;margin:0 auto!important}
+body[data-editorial-tool-ui] .breadcrumb{
+  margin:0 0 22px!important;
+  color:#969188!important;
+  font:13px/1.4 Georgia,"Times New Roman",serif!important;
+}
+body[data-editorial-tool-ui] .breadcrumb a{color:#77736c!important;text-decoration:none!important}
+body[data-editorial-tool-ui] .eyebrow,
+body[data-editorial-tool-ui] .tool-kicker{
+  color:var(--editorial-brown)!important;
+  font:700 10.5px/1.2 Arial,sans-serif!important;
+  letter-spacing:.09em!important;
+  text-transform:uppercase!important;
+}
+body[data-editorial-tool-ui] .hero h1{
+  margin:7px 0 10px!important;
+  color:var(--editorial-ink)!important;
+  font:400 38px/1.18 Georgia,"Times New Roman",serif!important;
+  letter-spacing:0!important;
+  text-wrap:balance;
+}
+body[data-editorial-tool-ui] .hero .lede{
+  margin:0!important;
+  padding:0 0 20px!important;
+  max-width:800px!important;
+  border-bottom:1px solid #e8e4dc!important;
+  color:var(--editorial-muted)!important;
+  font:italic 17px/1.6 Georgia,"Times New Roman",serif!important;
+}
+body[data-editorial-tool-ui] .section{
+  padding:24px 20px 8px!important;
+  background:transparent!important;
+  border:0!important;
+}
+body[data-editorial-tool-ui] .section>.wrap{margin:0 auto!important;padding:0!important}
+body[data-editorial-tool-ui] .tool-nav{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px 14px!important;
+  margin:0 0 14px!important;
+  padding:0 0 10px!important;
+  border-bottom:1px solid #e8e4dc!important;
+  background:none!important;
+}
+body[data-editorial-tool-ui] .tool-nav a{
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  color:#69665f!important;
+  font:700 11px/1.4 Arial,sans-serif!important;
+  text-decoration:none!important;
+}
+body[data-editorial-tool-ui] .tool-nav a:hover{color:var(--editorial-green)!important;text-decoration:underline!important}
+body[data-editorial-tool-ui] .locator{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto auto!important;
+  gap:9px!important;
+  align-items:stretch!important;
+  margin:0!important;
+  padding:14px!important;
+  border:1px solid var(--editorial-line)!important;
+  border-radius:6px!important;
+  background:var(--editorial-card)!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] .locator input,
+body[data-editorial-tool-ui] .locator select,
+body[data-editorial-tool-ui] .filter-row select,
+body[data-editorial-tool-ui] .maturity-input{
+  min-height:42px!important;
+  border:1px solid #cfc8ba!important;
+  border-radius:3px!important;
+  background:#fdfcf9!important;
+  color:var(--editorial-ink)!important;
+  font:16px/1.3 Georgia,"Times New Roman",serif!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] .btn,
+body[data-editorial-tool-ui] .secondary-btn,
+body[data-editorial-tool-ui] button{
+  border-radius:3px!important;
+  box-shadow:none!important;
+  font-family:Arial,sans-serif!important;
+}
+body[data-editorial-tool-ui] .btn{
+  min-height:42px!important;
+  border:1px solid var(--editorial-green)!important;
+  background:var(--editorial-green)!important;
+  color:#fff!important;
+  font-weight:700!important;
+}
+body[data-editorial-tool-ui] .btn:hover{background:var(--editorial-green-dark)!important;border-color:var(--editorial-green-dark)!important}
+body[data-editorial-tool-ui] .secondary-btn{
+  min-height:42px!important;
+  border:1px solid #cfc8ba!important;
+  background:#faf9f6!important;
+  color:#504d47!important;
+}
+body[data-editorial-tool-ui] .near-me-note{
+  margin:10px 0 2px!important;
+  color:#5f5b55!important;
+  font:13.5px/1.55 Georgia,"Times New Roman",serif!important;
+}
+body[data-editorial-tool-ui] .location-privacy,
+body[data-editorial-tool-ui] .small,
+body[data-editorial-tool-ui] .status{
+  color:#77736d!important;
+  font-family:Arial,sans-serif!important;
+  font-size:12px!important;
+  line-height:1.5!important;
+}
+body[data-editorial-tool-ui] .location-privacy{margin:3px 0 0!important}
+body[data-editorial-tool-ui] .status{margin:8px 0 0!important;min-height:18px!important}
+body[data-editorial-tool-ui] .result{
+  margin:18px 0 0!important;
+  padding:18px!important;
+  border:1px solid var(--editorial-line)!important;
+  border-top:4px solid var(--editorial-green)!important;
+  border-radius:6px!important;
+  background:var(--editorial-card)!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] .result-head{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:7px!important;
+  margin:0 0 12px!important;
+}
+body[data-editorial-tool-ui] .pill{
+  border:1px solid #d7d1c5!important;
+  border-radius:3px!important;
+  background:#faf9f6!important;
+  color:#57534d!important;
+  box-shadow:none!important;
+  font:700 10.5px/1.2 Arial,sans-serif!important;
+  letter-spacing:.05em!important;
+  text-transform:uppercase!important;
+}
+body[data-editorial-tool-ui] .answer{
+  margin:4px 0 7px!important;
+  color:var(--editorial-night)!important;
+  font:400 23px/1.3 Georgia,"Times New Roman",serif!important;
+}
+body[data-editorial-tool-ui] h2{
+  color:var(--editorial-green)!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-weight:400!important;
+  line-height:1.3!important;
+}
+body[data-editorial-tool-ui] h3{
+  color:var(--editorial-ink)!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-weight:400!important;
+  line-height:1.35!important;
+}
+body[data-editorial-tool-ui] .metrics{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr))!important;
+  gap:9px!important;
+  margin:14px 0!important;
+}
+body[data-editorial-tool-ui] .metric,
+body[data-editorial-tool-ui] .mini-card,
+body[data-editorial-tool-ui] .forecast-box,
+body[data-editorial-tool-ui] .expert-card{
+  padding:12px!important;
+  border:1px solid #e4ded3!important;
+  border-radius:4px!important;
+  background:#fbfaf7!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] .metric b,
+body[data-editorial-tool-ui] .metric strong{
+  color:var(--editorial-ink)!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-weight:400!important;
+}
+body[data-editorial-tool-ui] .metric span,
+body[data-editorial-tool-ui] .mini-card small{
+  color:#77736d!important;
+  font-family:Arial,sans-serif!important;
+}
+body[data-editorial-tool-ui] .decision-panel,
+body[data-editorial-tool-ui] .intel-panel,
+body[data-editorial-tool-ui] .truth-box,
+body[data-editorial-tool-ui] .muted-box,
+body[data-editorial-tool-ui] .season-callout,
+body[data-editorial-tool-ui] .aurora-oval-panel{
+  margin:16px 0!important;
+  padding:16px!important;
+  border:1px solid var(--editorial-line)!important;
+  border-left:4px solid var(--editorial-green)!important;
+  border-radius:5px!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] .grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:0 28px!important;
+}
+body[data-editorial-tool-ui] .source-box{
+  margin:0!important;
+  padding:17px 0 19px!important;
+  border:0!important;
+  border-bottom:1px solid #e8e4dc!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] .source-box h2,
+body[data-editorial-tool-ui] .source-box h3{margin-top:0!important}
+body[data-editorial-tool-ui] .handoff{
+  margin:18px 0 0!important;
+  padding:14px 16px!important;
+  border:1px solid var(--editorial-line)!important;
+  border-left:4px solid var(--editorial-green)!important;
+  border-radius:4px!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] .table-wrap{
+  overflow:auto!important;
+  border:1px solid var(--editorial-line)!important;
+  border-radius:4px!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+body[data-editorial-tool-ui] table{border-collapse:collapse!important;background:#fff!important}
+body[data-editorial-tool-ui] th{
+  background:#f5f2eb!important;
+  color:#55514a!important;
+  font:700 11px/1.3 Arial,sans-serif!important;
+  letter-spacing:.04em!important;
+  text-transform:uppercase!important;
+}
+body[data-editorial-tool-ui] td,
+body[data-editorial-tool-ui] th{border-color:#e7e1d6!important}
+body[data-editorial-tool-ui] .filter-row{
+  margin:16px 0 10px!important;
+  padding:0!important;
+  background:none!important;
+}
+body[data-editorial-tool-ui] .river-map-frame,
+body[data-editorial-tool-ui] .aurora-oval-image{
+  border:1px solid var(--editorial-line)!important;
+  border-radius:4px!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+body[data-editorial-tool-ui] .footer{
+  margin-top:36px!important;
+  border-top:1px solid #e8e4dc!important;
+  background:#fbfaf7!important;
+}
+body[data-editorial-tool-ui] .footer .wrap{
+  max-width:920px!important;
+  margin:0 auto!important;
+  padding:22px 20px 28px!important;
+  color:#88837b!important;
+  font:12.5px/1.5 Georgia,"Times New Roman",serif!important;
+}
+body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-green)!important;outline-offset:2px!important}
+@media(max-width:720px){
+  body[data-editorial-tool-ui] .site-head .head-in{display:block!important}
+  body[data-editorial-tool-ui] .nav{justify-content:flex-start!important;margin-top:8px!important}
+  body[data-editorial-tool-ui] .hero{padding-top:28px!important}
+  body[data-editorial-tool-ui] .hero h1{font-size:31px!important}
+  body[data-editorial-tool-ui] .locator{grid-template-columns:1fr!important}
+  body[data-editorial-tool-ui] .grid{grid-template-columns:1fr!important}
+  body[data-editorial-tool-ui] .btn,
+  body[data-editorial-tool-ui] .secondary-btn{width:100%!important}
+}
+@media(prefers-reduced-motion:reduce){body[data-editorial-tool-ui]{scroll-behavior:auto!important}}
+</style>
+</head><body data-editorial-tool-ui="2026-09">
+<header class="site-head"><div class="wrap head-in"><a class="brand" href="/">Chris Izworski</a><nav class="nav" aria-label="Primary"><a href="/">Home</a><a href="/tools/">Michigan Tools</a><a href="/national-tools/" aria-current="page">U.S. Outdoor Tools</a></nav></div></header>
 <main>
-<section class="hero"><div class="wrap"><div class="eyebrow">River Intelligence · USGS + NOAA + NWS</div><h1>U.S. River Conditions, Levels & Flow</h1><p class="lede">Find the monitored rivers near you first. Choose the river and, when needed, the USGS monitoring point you care about. Then open its live flow, trend, history and forecast context.</p></div></section>
+<section class="hero"><div class="wrap"><div class="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/national-tools/">U.S. Outdoor Tools</a> &rsaquo; U.S. River Conditions, Levels & Flow</div><div class="eyebrow">River Intelligence · USGS + NOAA + NWS</div><h1>U.S. River Conditions, Levels & Flow</h1><p class="lede">Find the monitored rivers near you first. Choose the river and, when needed, the USGS monitoring point you care about. Then open its live flow, trend, history and forecast context.</p></div></section>
 
 <section class="section"><div class="wrap">
 <div class="tool-nav"><a href="/national-tools/">All U.S. tools</a><a href="/national-tools/aurora/">Aurora</a><a href="/national-tools/frost/">Frost</a></div>
