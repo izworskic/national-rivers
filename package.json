@@ -1,0 +1,14 @@
+{
+  "name": "@izworskic/national-rivers",
+  "version": "1.0.0",
+  "private": false,
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@izworskic/national-outdoor-core": "github:izworskic/national-outdoor-core#v1.0.0"
+  }
+}
