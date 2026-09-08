@@ -34,7 +34,7 @@ async function walk(dir) {
     scanned += 1;
     const html = await readFile(fullPath, 'utf8');
     const needsGa4 = !html.includes(MEASUREMENT_ID);
-    const needsAdsense = !html.includes(ADSENSE_PUBLISHER_ID);
+    const needsAdsense = !/<script\b[^>]*src=["'][^"']*pagead\/js\/adsbygoogle\.js\b/i.test(html);
 
     if (!needsGa4) ga4AlreadyTagged += 1;
     if (!needsAdsense) adsenseAlreadyTagged += 1;
@@ -50,7 +50,8 @@ async function walk(dir) {
       ga4Injected += 1;
     }
     if (needsAdsense) {
-      tags.push(ADSENSE_TAG);
+      if (!html.includes('name="google-adsense-account"')) tags.push(ADSENSE_TAG);
+      tags.push(`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}" crossorigin="anonymous"></script>`);
       adsenseInjected += 1;
     }
 
