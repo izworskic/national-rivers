@@ -25,7 +25,7 @@ function walk(value, visit) {
 }
 
 function jsonLd(html, file) {
-  const blocks = [...html.matchAll(/<script\\b[^>]*type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi)];
+  const blocks = [...html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
   assert.ok(blocks.length > 0, `${file}: expected JSON-LD`);
   return blocks.map((match) => {
     try {
