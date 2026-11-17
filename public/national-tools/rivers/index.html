@@ -353,6 +353,17 @@ body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-gr
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="U.S. River Conditions, Levels & Flow | Chris Izworski">
 <meta name="twitter:description" content="Read nearby rivers with live USGS flow, change, temperature and water sensors plus historical and NOAA forecast context where available.">
+
+<style id="paddle-window-layer">
+.river-paddle-decision{padding:clamp(18px,3vw,30px);margin:20px 0;background:linear-gradient(130deg,#edf3ee,#f8f8f4);color:#233c34;border-radius:16px;box-shadow:0 3px 18px rgba(33,65,48,.09)}
+.river-paddle-decision h3{font:700 clamp(1.3rem,2.4vw,1.85rem)/1.25 system-ui;margin:8px 0}
+.river-paddle-decision p{max-width:73ch}
+.river-paddle-decision ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr));gap:8px 25px;padding-left:24px;line-height:1.5}
+.river-paddle-decision li{padding:3px 0}
+.paddle-checks{margin:16px 0;padding:16px;background:rgba(255,255,255,.82);border-radius:8px}
+.paddle-sources{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:15px}
+.paddle-sources a{text-decoration:underline;font-weight:700}
+</style>
 </head><body data-editorial-tool-ui="2026-09">
 <header class="site-head"><div class="wrap head-in"><a class="brand" href="/">Chris Izworski</a><nav class="nav" aria-label="Primary"><a href="/">Home</a><a href="/tools/">Michigan Tools</a><a href="/national-tools/" aria-current="page">U.S. Outdoor Tools</a></nav></div></header>
 <main>
@@ -388,6 +399,16 @@ body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-gr
     <div class="result-head"><span class="pill">Live USGS observations</span><span id="forecast-pill" class="pill">Loading river context</span></div>
     <div id="selected-answer" class="answer"></div>
     <div id="primary-gauge"></div>
+    <section class="river-paddle-decision" id="paddle-window" hidden aria-labelledby="paddle-title">
+      <span class="tool-kicker">PADDLE TRIP CONDITIONS CHECKPOINT</span>
+      <h3 id="paddle-title">River trip context</h3>
+      <p id="paddle-summary"></p>
+      <ul class="paddle-evidence" id="paddle-evidence"></ul>
+      <div class="paddle-checks"><strong>Before planning a float</strong><ul id="paddle-checklist"></ul></div>
+      <p class="small">A gauge does not show safe water, channel depth, legal access, portages or the hazards along your chosen reach. Use this checkpoint before selecting a specific launch and takeout.</p>
+      <div class="paddle-sources"><a id="paddle-usgs" href="#" target="_blank" rel="noopener noreferrer" hidden>Open official USGS gauge</a><a id="paddle-noaa" href="#" target="_blank" rel="noopener noreferrer" hidden>Open official NOAA river forecast</a><a href="https://chrisizworski.com/michigan-boat-launches/">Michigan boat launch directory</a></div>
+    </section>
+
     <div id="river-map" class="river-map-shell" hidden><div class="river-map-head"><div><span class="tool-kicker">Selected monitoring point</span><strong id="map-gauge-name">USGS gauge</strong></div><div class="map-actions"><a id="map-open" class="map-btn" href="#" target="_blank" rel="noopener">Open in OpenStreetMap ↗</a></div></div><iframe id="river-map-frame" title="Map of selected river gauge" loading="lazy"></iframe><div class="map-attribution">Basemap © OpenStreetMap contributors. River observations come from USGS; the map is orientation context only.</div></div>
     <p class="small" id="updated"></p>
     <div class="river-switch-footer"><button id="choose-another-river" type="button" class="secondary-btn river-back-btn">← Choose another river</button></div>
@@ -400,6 +421,7 @@ body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-gr
 <div class="source-box"><h2>More than flow, where the gauge supports it</h2><p>USGS stations vary. Some report only discharge; others also report stage, water temperature, turbidity, dissolved oxygen, conductivity or pH. The tool shows only parameters actually returned by that gauge and keeps NOAA/NWS forecast context separate from observations.</p><p><a href="https://waterdata.usgs.gov/">USGS Water Data</a> · <a href="https://water.noaa.gov/">NOAA NWPS</a> · <a href="https://www.weather.gov/documentation/services-web-API">NWS API</a></p></div>
 </div></section>
 
+<script src="/assets/paddle-window.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
  const N=window.NationalTools,form=document.getElementById("loc");
@@ -633,11 +655,30 @@ document.addEventListener("DOMContentLoaded",function(){
    }
    return null;
  }
+
+ function renderPaddleCheckpoint(gauge,weather){
+   const section=document.getElementById("paddle-window");
+   if(!section||!gauge||!window.PaddleWindow){if(section)section.hidden=true;return;}
+   const decision=window.PaddleWindow.assess(gauge,weather);
+   section.hidden=false;
+   document.getElementById("paddle-title").textContent=decision.title;
+   document.getElementById("paddle-summary").textContent=decision.explanation;
+   const evidence=document.getElementById("paddle-evidence"),checks=document.getElementById("paddle-checklist");
+   evidence.replaceChildren();
+   checks.replaceChildren();
+   decision.evidence.forEach(function(value){const li=document.createElement("li");li.textContent=value;evidence.appendChild(li);});
+   decision.mustVerify.forEach(function(value){const li=document.createElement("li");li.textContent=value;checks.appendChild(li);});
+   [["paddle-usgs",decision.sourceUsgsUrl],["paddle-noaa",decision.officialNoaaUrl]].forEach(function(item){
+     const anchor=document.getElementById(item[0]);anchor.hidden=!item[1];
+     if(item[1])anchor.href=item[1];else anchor.removeAttribute("href");
+   });
+ }
  function renderDetail(d,loc,loading){
    document.getElementById("result").hidden=false;
    document.getElementById("river-list-panel").hidden=true;
    document.getElementById("river-detail").hidden=false;
    const first=d.gauges?.[0];
+   renderPaddleCheckpoint(first,d.weather);
    if(!first){
      document.getElementById("selected-answer").textContent="Live USGS reading unavailable for this monitoring point";
      document.getElementById("primary-gauge").innerHTML='<div class="truth-box">No replacement value was generated. Return to the nearby river list and try another monitoring point.</div>';
