@@ -364,6 +364,29 @@ body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-gr
 .paddle-sources{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:15px}
 .paddle-sources a{text-decoration:underline;font-weight:700}
 </style>
+<script src="/assets/paddle-trip-catalog.js" defer></script>
+
+<style id="paddle-trip-pilot-design">
+.paddle-trip-pilot{background:#f3f3ec;color:#263b32;padding:30px 0 40px}
+.paddle-trip-pilot h2{font-size:clamp(1.7rem,3vw,2.65rem);margin:6px 0 12px}
+.paddle-trip-intro{max-width:78ch}
+.paddle-trip-eyebrow{font:700 .75rem system-ui;letter-spacing:.14em;color:#3f6351}
+.paddle-trip-picker{margin:20px 0 16px}
+.paddle-trip-picker label{display:block;font:700 1rem system-ui;margin-bottom:7px}
+.paddle-trip-picker select{display:block;max-width:100%;width:min(100%,560px);padding:12px 14px;border-radius:8px;border:1px solid #71877b;background:#fff;color:#193d30;font:600 1rem system-ui}
+.paddle-trip-picker select:focus-visible,.paddle-route-detail a:focus-visible{outline:3px solid #416e53;outline-offset:2px}
+.paddle-route-detail{background:#fff;border-radius:16px;padding:clamp(16px,3.4vw,32px);box-shadow:0 5px 24px rgba(22,55,35,.08)}
+.paddle-route-detail h3{font-size:clamp(1.3rem,2.5vw,1.8rem);margin-bottom:12px}
+.paddle-route-detail h4{font-size:1.18rem;margin:6px 0}
+.paddle-published-facts{display:flex;flex-wrap:wrap;gap:8px 25px;font-weight:700;margin-bottom:14px}
+.paddle-endpoints{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,255px),1fr));gap:16px;margin:14px 0}
+.paddle-endpoint{padding:18px;background:#f0f4f0;border-radius:8px}
+.paddle-endpoint-kicker{font:700 .72rem system-ui;letter-spacing:.12em;color:#3e6451}
+.paddle-endpoint p{margin:6px 0}
+.paddle-route-warning{border-left:4px solid #92663d;padding:12px 16px;background:#faf5ea;border-radius:8px;margin:16px 0}
+.paddle-route-detail a{text-decoration:underline;font-weight:700}
+.paddle-trip-verification{margin-top:20px;max-width:78ch}
+</style>
 </head><body data-editorial-tool-ui="2026-09">
 <header class="site-head"><div class="wrap head-in"><a class="brand" href="/">Chris Izworski</a><nav class="nav" aria-label="Primary"><a href="/">Home</a><a href="/tools/">Michigan Tools</a><a href="/national-tools/" aria-current="page">U.S. Outdoor Tools</a></nav></div></header>
 <main>
@@ -781,6 +804,23 @@ document.addEventListener("DOMContentLoaded",function(){
  N.bind(form,run);const q=new URLSearchParams(location.search).get("q");if(q){form.querySelector("input").value=q;form.requestSubmit();}
 });
 </script>
+
+<section class="section paddle-trip-pilot" id="paddle-trip-pilot"><div class="wrap">
+  <p class="paddle-trip-eyebrow">MICHIGAN WATER TRAIL PILOT</p>
+  <h2>Choose a real put-in and takeout</h2>
+  <p class="paddle-trip-intro">Explore five river segments with named access points and published route information. These are research-backed trip candidates, not live clearance to launch. Published river miles and historic float times are shown only when a source supplies them.</p>
+  <div class="paddle-trip-picker">
+    <label for="paddle-route-select">Published river segment</label>
+    <select id="paddle-route-select" aria-label="Choose a river segment"><option value="ausable-m33-louds">M-33 Access to Loud's Rest Stop</option></select>
+    <p id="paddle-route-status" class="small" role="status" aria-live="polite">Opening reviewed route inventory...</p>
+  </div>
+  <div id="paddle-route-detail" class="paddle-route-detail" aria-live="polite">
+    <h3>Au Sable River: M-33 Access to Loud's Rest Stop</h3>
+    <p>USDA Forest Service published segment #1 to #2: 2 river miles and a historical 1-hour float reference. Present access conditions and water hazards require separate verification.</p>
+    <a href="https://outdoormichigan.org/trails/AuSableScenicRiverMap.pdf" target="_blank" rel="noopener noreferrer">View the Forest Service river-access map</a>
+  </div>
+  <p class="paddle-trip-verification"><strong>Planning checklist:</strong> Verify both arrivals, river closures, dam releases, strainers, cold water, vehicle parking, and current weather. Google Maps links identify places or named-location searches, not guaranteed legal launch entrances.</p>
+</div></section>
 <section class="section"><div class="wrap">
 <h2>River condition questions this tool answers</h2>
 <div class="grid">
