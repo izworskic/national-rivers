@@ -46,7 +46,7 @@
     const end = catalog.access.find(x=>x.id===segment.to);
     const source = catalog.sources[segment.routeSource];
     const duration = segment.timeHoursMin === segment.timeHoursMax ?
-      segment.timeHoursMin + " hours" :
+      segment.timeHoursMin + (segment.timeHoursMin === 1 ? " hour" : " hours") :
       segment.timeHoursMin + " to " + segment.timeHoursMax + " hours";
     return {
       ...segment, start, end, source, duration,
