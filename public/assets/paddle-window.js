@@ -34,8 +34,8 @@
     const comparison = fresh ? compareFlow(flow, gauge?.historical_daily_flow) : "unknown";
     const flood = String(gauge?.nwps?.observed_category || "");
     const crestFlood = String(gauge?.nwps?.forecast_crest_category || "");
-    const officialHigh = /Major Flood|Moderate Flood|Minor Flood|Action/i.test(flood) ||
-      /Major Flood|Moderate Flood|Minor Flood|Action/i.test(crestFlood);
+    const elevated = category => /^(?:Action|Minor Flood|Moderate Flood|Major Flood)$/i.test(category.trim());
+    const officialHigh = elevated(flood) || elevated(crestFlood);
     const next24 = weather?.next_24h || null;
     const rain = numeric(next24?.max_precip_probability, 0, 100);
     const temp = numeric(gauge?.water_temp_f ?? gauge?.sensors?.water_temperature?.value, -5, 110);
