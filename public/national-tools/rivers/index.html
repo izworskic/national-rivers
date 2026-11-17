@@ -749,6 +749,8 @@ document.addEventListener("DOMContentLoaded",function(){
    if(!meta||!currentLocation)return;
    const requestId=++detailRequestId,loc=currentLocation;
    activeLens="general";
+   document.getElementById("river-expert-handoff").hidden=true;
+   document.getElementById("paddle-window").hidden=true;
    document.getElementById("river-list-panel").hidden=true;
    document.getElementById("river-detail").hidden=false;
    document.getElementById("selected-river-label").textContent=meta.group.name+" · "+prettyStation(meta.gauge.name);
