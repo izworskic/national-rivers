@@ -54,7 +54,10 @@
   async function readManisteeCatalog(fetcher){
     const run=fetcher || (typeof fetch==="function"?fetch:null);
     if(!run)throw Error("Fetch unavailable");
-    const response=await run(MANISTEE_API+"?mode=access",{headers:{Accept:"application/json"}});
+    const options={headers:{Accept:"application/json"}};
+    if(typeof AbortSignal!=="undefined"&&typeof AbortSignal.timeout==="function")
+      options.signal=AbortSignal.timeout(5500);
+    const response=await run(MANISTEE_API+"?mode=access",options);
     if(!response.ok)throw Error("Manistee catalog unavailable");
     return validCatalog(await response.json());
   }
@@ -78,15 +81,20 @@
     return validRoute(await response.json());
   }
   function enrichManistee(element,note){
-    if(!catalogPromise)catalogPromise=readManisteeCatalog();
+    if(!catalogPromise){
+      const current=readManisteeCatalog();
+      catalogPromise=current;
+      // One intermittent failure must not strand the visitor for this session.
+      current.catch(function(){if(catalogPromise===current)catalogPromise=null;});
+    }
     catalogPromise.then(function(summary){
       if(element.dataset.specialist!=="manistee"||!element.isConnected)return;
       const stamp=summary.registryAuditDate?(" Catalog review: "+summary.registryAuditDate+"."):"";
-      note.textContent=summary.accessCount+" source-documented access locations from the Manistee field map."+stamp+
-        " Current arrival status is not verified here. Choose put-in and takeout in the dedicated planner.";
+      note.textContent=summary.accessCount+" mapped access and campground locations in the Manistee Field Map."+stamp+
+        " Choose your put-in and takeout there. Check road, parking and launch conditions before you go.";
     }).catch(function(){
       if(element.dataset.specialist!=="manistee"||!element.isConnected)return;
-      note.textContent="The Manistee data interface is not available yet. Open the full field map to plan your float.";
+      note.textContent="For put-ins, takeouts and the river map, continue to the Manistee Field Map.";
     });
   }
   function render(gauge,element){
@@ -108,7 +116,7 @@
     if(expert.id==="manistee"){
       const note=document.createElement("p");
       note.className="small";
-      note.textContent="Checking the Manistee source-owned access inventory...";
+      note.textContent="Checking the river map for access locations...";
       element.insertBefore(note,link);
       enrichManistee(element,note);
     }
