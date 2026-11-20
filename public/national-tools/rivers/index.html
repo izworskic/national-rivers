@@ -679,7 +679,7 @@ document.addEventListener("DOMContentLoaded",function(){
       '<div class="river-choice-copy"><h3>'+N.esc(group.name)+'</h3><span class="river-count">'+gauges.length+' USGS monitoring point'+(one?'':'s')+' nearby</span></div></div>'+
       (one
         ? '<p class="small">'+N.esc(prettyStation(gauges[0].name))+'</p>'+monitoringPointButton(gauges[0])
-        : '<details class="river-monitor-list"><summary>Choose among '+gauges.length+' monitoring points</summary><div class="monitoring-points">'+gauges.map(monitoringPointButton).join("")+'</div></details>')+
+        : '<details class="river-monitor-list"><summary>Choose monitoring point ('+gauges.length+' nearby)</summary><div class="monitoring-points">'+gauges.map(monitoringPointButton).join("")+'</div></details>')+
       '</article>';
  }
  function bindDiscoveryButtons(){
