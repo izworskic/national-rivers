@@ -452,6 +452,7 @@ body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-gr
 document.addEventListener("DOMContentLoaded",function(){
  const N=window.NationalTools,form=document.getElementById("loc");
  let activeLens="general",currentLocation=null,currentDiscovery=null,currentRadius=50,currentFilter="",detailRequestId=0;
+ const scrollMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
  function flow(v){return v==null?"Unavailable":Math.round(v).toLocaleString()+" cfs"}
  function stage(v){return v==null?"Unavailable":Number(v).toFixed(2)+" ft"}
  function temp(v){return v==null?"Unavailable":Number(v).toFixed(1)+"°F"}
@@ -460,12 +461,25 @@ document.addEventListener("DOMContentLoaded",function(){
  function trend(g){if(g.trend_percent_6h==null)return "Trend unavailable";if(Math.abs(g.trend_percent_6h)<3)return "Roughly steady";return(g.trend_percent_6h>0?"Rising ":"Falling ")+Math.abs(g.trend_percent_6h)+"% in 6h"}
  function sensor(g,key){return g?.sensors?.[key]||null}
  function sensorValue(s,decimals){if(!s||s.value==null)return "Unavailable";return number(s.value,decimals)+(s.unit?" "+s.unit:"")}
- function spark(series,label){
-   const pts=(series||[]).filter(p=>Number.isFinite(Number(p.value))&&Date.parse(p.time||""));if(pts.length<2)return "";
-   const values=pts.map(p=>Number(p.value)),min=Math.min(...values),max=Math.max(...values),range=Math.max(.0001,max-min),w=420,h=90,pad=5;
-   const coords=values.map((v,i)=>[(i/(values.length-1))*(w-pad*2)+pad,h-pad-((v-min)/range)*(h-pad*2)]);
-   const path=coords.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
-   return '<svg class="spark" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+N.esc(label||"Recent 24 hour trend")+'"><path d="'+path+'" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke"></path></svg>';
+ function displayTime(t){
+   return new Date(t).toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"});
+ }
+ function hydrograph(series){
+   const m=window.RiverFlowViz?.flowModel(series);
+   if(!m)return '<p class="river-chart-empty">A comparable flow trace is not available from this gauge. The latest reported discharge remains above.</p>';
+   const first=displayTime(m.start),last=displayTime(m.end);
+   const readout='Reported USGS discharge in cubic feet per second, '+first+' to '+last+'. Latest '+Math.round(m.last.value).toLocaleString()+' cfs. Observed low '+Math.round(m.low).toLocaleString()+' cfs, high '+Math.round(m.high).toLocaleString()+' cfs. Gaps: '+m.gaps+'.';
+   return '<figure class="river-flow-history" aria-label="Recent measured river discharge">'+
+     '<figcaption><strong>How the flow has moved</strong><span>'+m.count+' USGS observations · cfs</span></figcaption>'+
+     '<svg viewBox="0 0 '+m.width+' '+m.height+'" role="img" aria-label="'+N.esc(readout)+'">'+
+     '<line class="river-axis" x1="'+m.left+'" y1="'+m.top+'" x2="'+(m.width-m.right)+'" y2="'+m.top+'"></line>'+
+     '<line class="river-axis" x1="'+m.left+'" y1="'+(m.height-m.bottom)+'" x2="'+(m.width-m.right)+'" y2="'+(m.height-m.bottom)+'"></line>'+
+     '<text class="river-axis-label" x="'+(m.left-8)+'" y="'+(m.top+4)+'" text-anchor="end">'+Math.round(m.axisHigh).toLocaleString()+'</text>'+
+     '<text class="river-axis-label" x="'+(m.left-8)+'" y="'+(m.height-m.bottom+4)+'" text-anchor="end">'+Math.round(m.axisLow).toLocaleString()+'</text>'+
+     '<path class="river-trace" d="'+m.path+'"></path>'+
+     '<circle class="river-endpoint" cx="'+m.last.x.toFixed(1)+'" cy="'+m.last.y.toFixed(1)+'" r="5"></circle></svg>'+
+     '<div class="river-chart-foot"><span>'+N.esc(first)+'</span><span>'+N.esc(last)+'</span></div>'+
+     '<p class="river-band-note">Observed readings only. The vertical scale fits the observed range.'+(m.gaps?' '+m.gaps+' gap'+(m.gaps===1?'':'s')+' in reporting are not connected.':'')+'</p></figure>';
  }
  function historyComparison(g){
    const h=g.historical_daily_flow,v=Number(g.discharge_cfs);
@@ -478,9 +492,23 @@ document.addEventListener("DOMContentLoaded",function(){
  }
  function historical(g,loading){
    if(loading)return '<p class="small">Loading approved same-date USGS historical percentiles…</p>';
-   const h=g.historical_daily_flow;if(!h)return '<p class="small">Approved same-date USGS historical percentiles are unavailable for this gauge.</p>';
+   const h=g.historical_daily_flow;
+   if(!h)return '<p class="small">Approved same-date USGS historical percentiles are unavailable for this gauge.</p>';
    const comparison=g.historical_comparison||historyComparison(g);
-   return '<div class="range-line"><strong>'+N.esc(comparison.label||"Historical comparison")+'</strong><span>10th '+flow(h.p10)+' · median '+flow(h.p50)+' · 90th '+flow(h.p90)+'</span></div>';
+   const m=window.RiverFlowViz?.historicalModel(h,g.discharge_cfs);
+   if(!m)return '<p class="small">A reliable same-date percentile display is unavailable for this gauge.</p>';
+   const pos=m.positions,pct=value=>value.toFixed(3)+'%';
+   const description=(comparison.label||"Historical comparison")+'. Latest '+flow(m.observed)+'. 10th percentile '+flow(m.p10)+', median '+flow(m.p50)+', 90th percentile '+flow(m.p90)+'.';
+   return '<figure class="river-historical-band">'+
+      '<figcaption><strong>Where this flow sits for the calendar date</strong><span>'+N.esc(comparison.label||"Historical comparison")+'</span></figcaption>'+
+      '<div class="river-band-track" role="img" aria-label="'+N.esc(description)+'">'+
+      '<span class="river-band-outer" style="left:'+pct(pos.p10)+';width:'+pct(pos.p90-pos.p10)+'"></span>'+
+      '<span class="river-band-middle" style="left:'+pct(pos.p25)+';width:'+pct(pos.p75-pos.p25)+'"></span>'+
+      '<span class="river-band-median" style="left:'+pct(pos.p50)+'"></span>'+
+      '<span class="river-band-current" style="left:'+pct(pos.observed)+'"></span></div>'+
+      '<div class="river-band-legend"><span>Green: middle 50% of historical flows</span><span>Brown marker: latest reading</span></div>'+
+      '<p class="river-historical-text">10th '+flow(m.p10)+' · median '+flow(m.p50)+' · 90th '+flow(m.p90)+' · latest '+flow(m.observed)+'</p>'+
+      '<p class="river-band-note">Same calendar date across the USGS reference record. This comparison is not a paddling or flood-safety threshold.</p></figure>';
  }
  function nwps(g,loading){
    if(loading)return '<div class="forecast-box muted-box"><strong>Loading NOAA river forecast context…</strong><span>Current USGS observations are already available.</span></div>';
@@ -588,13 +616,13 @@ document.addEventListener("DOMContentLoaded",function(){
  function lensPanel(g,d){
    const lenses=[["general","General"],["paddle","Paddle"],["fish","Fish"],["swim","Swim"],["ecology","Ecology"],["trip","Trip"]];
    const guidance=lensGuidance(g,d,activeLens);
-   return '<div class="lens-panel"><div class="section-mini-head"><div><span class="tool-kicker">Interpret the same river</span><strong>Choose an activity lens</strong></div><span>No combined safety score</span></div><div class="lens-tabs">'+lenses.map(function(pair){return '<button type="button" class="lens-tab '+(activeLens===pair[0]?"active":"")+'" data-river-lens="'+pair[0]+'">'+pair[1]+'</button>'}).join("")+'</div><div id="lens-output" class="lens-output"><h4>'+N.esc(guidance.title)+'</h4><ul>'+guidance.items.filter(Boolean).map(function(item){return '<li>'+N.esc(item)+'</li>'}).join("")+'</ul><p>'+N.esc(guidance.note)+'</p></div></div>';
+   return '<div class="lens-panel"><div class="section-mini-head"><div><span class="tool-kicker">Interpret the same river</span><strong>Choose an activity lens</strong></div><span>No combined safety score</span></div><div class="lens-tabs">'+lenses.map(function(pair){return '<button type="button" class="lens-tab '+(activeLens===pair[0]?"active":"")+'" aria-pressed="'+(activeLens===pair[0]?"true":"false")+'" data-river-lens="'+pair[0]+'">'+pair[1]+'</button>'}).join("")+'</div><div id="lens-output" class="lens-output"><h4>'+N.esc(guidance.title)+'</h4><ul>'+guidance.items.filter(Boolean).map(function(item){return '<li>'+N.esc(item)+'</li>'}).join("")+'</ul><p>'+N.esc(guidance.note)+'</p></div></div>';
  }
  function bindLens(g,d){
    document.querySelectorAll("[data-river-lens]").forEach(function(button){button.addEventListener("click",function(){
      activeLens=button.dataset.riverLens||"general";
      const guidance=lensGuidance(g,d,activeLens);
-     document.querySelectorAll("[data-river-lens]").forEach(function(x){x.classList.toggle("active",x.dataset.riverLens===activeLens)});
+     document.querySelectorAll("[data-river-lens]").forEach(function(x){x.classList.toggle("active",x.dataset.riverLens===activeLens);x.setAttribute("aria-pressed",String(x.dataset.riverLens===activeLens))});
      const output=document.getElementById("lens-output");
      if(output)output.innerHTML='<h4>'+N.esc(guidance.title)+'</h4><ul>'+guidance.items.filter(Boolean).map(function(item){return '<li>'+N.esc(item)+'</li>'}).join("")+'</ul><p>'+N.esc(guidance.note)+'</p>';
    })});
@@ -607,8 +635,8 @@ document.addEventListener("DOMContentLoaded",function(){
  function gaugeCard(g,loading,d){
    const wt=sensor(g,"water_temperature");
    return '<article class="river-card primary"><div class="river-title"><div><span class="tool-kicker">'+g.distance_miles.toFixed(1)+' mi from search point</span><h3>'+N.esc(g.name)+'</h3></div><span class="pill '+(g.stale?"danger":"")+'">'+(g.age_minutes==null?"age unknown":g.age_minutes+" min old")+'</span></div>'+
-   '<div class="metrics"><div class="metric"><b>'+flow(g.discharge_cfs)+'</b><span>'+N.esc(trend(g))+'</span></div><div class="metric"><b>'+stage(g.gage_height_ft)+'</b><span>gage height</span></div><div class="metric"><b>'+temp(wt?.value??g.water_temp_f)+'</b><span>water temperature'+(wt?" · monitored":" · unavailable")+'</span></div></div>'+
-   spark(g.flow_series_24h,"Recent 24 hour flow trend")+primaryIntelligence(g,d,loading)+historical(g,loading)+nwps(g,loading)+
+   '<div class="metrics"><div class="metric river-flow-metric"><b>'+flow(g.discharge_cfs)+'</b><span>Observed discharge · '+N.esc(trend(g))+'</span></div><div class="metric"><b>'+stage(g.gage_height_ft)+'</b><span>gage height</span></div><div class="metric"><b>'+temp(wt?.value??g.water_temp_f)+'</b><span>water temperature'+(wt?" · monitored":" · unavailable")+'</span></div></div>'+
+   hydrograph(g.flow_series_24h)+primaryIntelligence(g,d,loading)+historical(g,loading)+nwps(g,loading)+
    '<div class="map-actions"><button type="button" class="map-btn" data-map-id="'+N.esc(g.id)+'">Show selected monitoring point on map</button></div></article>';
  }
  function setMap(g){
@@ -619,12 +647,13 @@ document.addEventListener("DOMContentLoaded",function(){
    frame.src="https://www.openstreetmap.org/export/embed.html?bbox="+encodeURIComponent(bbox)+"&layer=mapnik&marker="+encodeURIComponent(lat+","+lon);
    document.getElementById("map-gauge-name").textContent=g.name;
    document.getElementById("map-open").href="https://www.openstreetmap.org/?mlat="+encodeURIComponent(lat)+"&mlon="+encodeURIComponent(lon)+"#map=13/"+encodeURIComponent(lat)+"/"+encodeURIComponent(lon);
+    document.getElementById("map-google").href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(lat+","+lon);
    shell.hidden=false;
  }
  function bindMapButton(g){
    const button=document.querySelector("[data-map-id]");
    if(!button)return;
-   button.addEventListener("click",function(){setMap(g);document.getElementById("river-map").scrollIntoView({behavior:"smooth",block:"nearest"})});
+   button.addEventListener("click",function(){setMap(g);document.getElementById("river-map").scrollIntoView({behavior:scrollMotion,block:"nearest"})});
  }
  function prettyStation(name){
    return String(name||"USGS monitoring point").toLowerCase().replace(/\b([a-z])/g,function(m){return m.toUpperCase()});
@@ -644,13 +673,14 @@ document.addEventListener("DOMContentLoaded",function(){
    return '<button type="button" class="monitoring-point" data-site-id="'+N.esc(g.id)+'"><span>'+N.esc(prettyStation(g.name))+'</span><small>'+Number(g.distance_miles).toFixed(1)+' mi away · USGS '+N.esc(g.id)+'</small></button>';
  }
  function riverChoiceCard(group){
-   const gauges=group.gauges||[];
-   const one=gauges.length===1;
-   return '<article class="river-choice-card"><div class="river-choice-head"><div><span class="tool-kicker">'+Number(group.closest_distance_miles).toFixed(1)+' mi to closest monitor</span><h3>'+N.esc(group.name)+'</h3></div><span class="pill">'+gauges.length+' monitoring point'+(gauges.length===1?"":"s")+'</span></div>'+
-     (one
-       ? '<p class="small">'+N.esc(prettyStation(gauges[0].name))+'</p>'+monitoringPointButton(gauges[0])
-       : '<details class="river-monitor-list"><summary>Choose monitoring point</summary><div class="monitoring-points">'+gauges.map(monitoringPointButton).join("")+'</div></details>')+
-     '</article>';
+   const gauges=group.gauges||[],one=gauges.length===1;
+   return '<article class="river-choice-card"><div class="river-choice-head">'+
+      '<div class="river-distance"><strong>'+Number(group.closest_distance_miles).toFixed(1)+'</strong><span>miles to nearest gauge</span></div>'+
+      '<div class="river-choice-copy"><h3>'+N.esc(group.name)+'</h3><span class="river-count">'+gauges.length+' USGS monitoring point'+(one?'':'s')+' nearby</span></div></div>'+
+      (one
+        ? '<p class="small">'+N.esc(prettyStation(gauges[0].name))+'</p>'+monitoringPointButton(gauges[0])
+        : '<details class="river-monitor-list"><summary>Choose among '+gauges.length+' monitoring points</summary><div class="monitoring-points">'+gauges.map(monitoringPointButton).join("")+'</div></details>')+
+      '</article>';
  }
  function bindDiscoveryButtons(){
    document.querySelectorAll("[data-site-id]").forEach(function(button){
@@ -761,7 +791,7 @@ document.addEventListener("DOMContentLoaded",function(){
    document.getElementById("primary-gauge").innerHTML='<div class="river-loading">Loading live USGS observations for the monitoring point you selected…</div>';
    document.getElementById("forecast-pill").textContent="Loading live observation";
    document.getElementById("river-map").hidden=true;
-   document.getElementById("river-detail").scrollIntoView({behavior:"smooth",block:"start"});
+   document.getElementById("river-detail").scrollIntoView({behavior:scrollMotion,block:"start"});
    try{
      const r=await fetch("/api/national-rivers?lat="+encodeURIComponent(loc.latitude)+"&lon="+encodeURIComponent(loc.longitude)+"&site="+encodeURIComponent(siteId));
      const d=typeof N.readJsonResponse==="function"
@@ -800,14 +830,16 @@ document.addEventListener("DOMContentLoaded",function(){
    detailRequestId++;
    renderDiscovery();
    requestAnimationFrame(function(){
-     document.getElementById("result").scrollIntoView({behavior:"smooth",block:"start"});
+     document.getElementById("result").scrollIntoView({behavior:scrollMotion,block:"start"});
      const filter=document.getElementById("river-filter");
      if(filter&&currentFilter)filter.focus({preventScroll:true});
    });
  }
  document.getElementById("back-to-rivers").addEventListener("click",returnToRiverList);
  document.getElementById("choose-another-river").addEventListener("click",returnToRiverList);
- N.bind(form,run);const q=new URLSearchParams(location.search).get("q");if(q){form.querySelector("input").value=q;form.requestSubmit();}
+ N.bind(form,run);
+ document.querySelectorAll("[data-river-example]").forEach(function(button){button.addEventListener("click",function(){form.querySelector("input").value=button.dataset.riverExample;form.requestSubmit();});});
+ const q=new URLSearchParams(location.search).get("q");if(q){form.querySelector("input").value=q;form.requestSubmit();}
 });
 </script>
 
