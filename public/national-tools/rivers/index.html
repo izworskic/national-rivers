@@ -4,6 +4,7 @@
 <meta name="description" content="Read nearby rivers with live USGS flow, change, temperature and water sensors plus historical and NOAA forecast context where available.">
 <link rel="canonical" href="https://chrisizworski.com/national-tools/rivers/"><meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="stylesheet" href="/assets/national-tools.css?v=20260901-placebar1">
+<link rel="stylesheet" href="/assets/river-experience.css?v=20261120">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://chrisizworski.com/#person","name":"Chris Izworski","url":"https://chrisizworski.com/"},{"@type":"WebSite","@id":"https://chrisizworski.com/#website","url":"https://chrisizworski.com/","name":"Chris Izworski","author":{"@id":"https://chrisizworski.com/#person"},"publisher":{"@id":"https://chrisizworski.com/#person"}},{"@type":"SoftwareApplication","@id":"https://chrisizworski.com/national-tools/rivers/#page","url":"https://chrisizworski.com/national-tools/rivers/","name":"U.S. River Conditions, Levels & Flow","description":"Read nearby rivers with live USGS flow, recent change, available water sensors, historical comparison and official NOAA forecast context.","dateModified":"2026-09-03","author":{"@id":"https://chrisizworski.com/#person"},"publisher":{"@id":"https://chrisizworski.com/#person"},"isPartOf":{"@id":"https://chrisizworski.com/#website"}}]}</script>
 
 <style id="editorial-tool-ui">
@@ -391,10 +392,11 @@ body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-gr
 <main>
 <section class="hero"><div class="wrap"><div class="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/national-tools/">U.S. Outdoor Tools</a> &rsaquo; U.S. River Conditions, Levels & Flow</div><div class="eyebrow">River Intelligence · USGS + NOAA + NWS</div><h1>U.S. River Conditions, Levels & Flow</h1><p class="lede">Find the monitored rivers near you first. Choose the river and, when needed, the USGS monitoring point you care about. Then open its live flow, trend, history and forecast context.</p></div></section>
 
-<section class="section"><div class="wrap">
-<div class="tool-nav"><a href="/national-tools/">All U.S. tools</a><a href="/national-tools/aurora/">Aurora</a><a href="/national-tools/frost/">Frost</a></div>
-<form id="loc" class="locator"><input aria-label="U.S. city or ZIP" placeholder="City or ZIP" required><button class="btn" type="submit">Find nearby rivers</button><button type="button" class="secondary-btn geo-btn" data-use-location>Use my location</button></form><p class="near-me-note">Works anywhere in the United States: tap <strong>Use my location</strong> for conditions near me, or type any U.S. city or ZIP code.</p>
-<p class="location-privacy">Optional. Your browser shares a location rounded to about 0.001° only after you tap. It is used to load nearby conditions and is not included in analytics.</p><div class="status" aria-live="polite"></div>
+<section class="section river-workbench"><div class="wrap">
+
+<div class="river-start-line"><strong>Find the water</strong><span>Start with a city or your location, then choose a monitoring point.</span></div>
+<form id="loc" class="locator"><input aria-label="U.S. city or ZIP" placeholder="Enter a U.S. city or ZIP" autocomplete="address-level2" required><button class="btn" type="submit">Find nearby rivers</button><button type="button" class="secondary-btn geo-btn" data-use-location>Use my location</button></form><div class="river-quick-places" aria-label="Example searches"><span>Explore a place:</span><button type="button" data-river-example="Bay City, MI">Bay City</button><button type="button" data-river-example="Asheville, NC">Asheville</button><button type="button" data-river-example="Boise, ID">Boise</button></div><noscript><p class="river-no-js">Interactive river discovery requires JavaScript. Browse <a href="https://waterdata.usgs.gov/">USGS Water Data</a> for station readings.</p></noscript><p class="near-me-note">Works anywhere in the United States: tap <strong>Use my location</strong> for conditions near me, or type any U.S. city or ZIP code.</p>
+<p class="location-privacy">Optional. Your browser shares a location rounded to about 0.001° only after you tap. It is used to load nearby conditions and is not included in analytics.</p><div class="status" aria-live="polite"></div><div class="tool-nav"><a href="/national-tools/">All U.S. tools</a><a href="/national-tools/aurora/">Aurora</a><a href="/national-tools/frost/">Frost</a></div>
 
 <div id="result" class="result" hidden>
   <div id="river-list-panel">
@@ -432,7 +434,7 @@ body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-gr
       <div class="paddle-sources"><a id="paddle-usgs" href="#" target="_blank" rel="noopener noreferrer" hidden>Open official USGS gauge</a><a id="paddle-noaa" href="#" target="_blank" rel="noopener noreferrer" hidden>Open official NOAA river forecast</a><a href="https://chrisizworski.com/michigan-boat-launches/">Michigan boat launch directory</a></div>
     </section>
 
-    <div id="river-map" class="river-map-shell" hidden><div class="river-map-head"><div><span class="tool-kicker">Selected monitoring point</span><strong id="map-gauge-name">USGS gauge</strong></div><div class="map-actions"><a id="map-open" class="map-btn" href="#" target="_blank" rel="noopener">Open in OpenStreetMap ↗</a></div></div><iframe id="river-map-frame" title="Map of selected river gauge" loading="lazy"></iframe><div class="map-attribution">Basemap © OpenStreetMap contributors. River observations come from USGS; the map is orientation context only.</div></div>
+    <div id="river-map" class="river-map-shell" hidden><div class="river-map-head"><div><span class="tool-kicker">Selected monitoring point</span><strong id="map-gauge-name">USGS gauge</strong></div><div class="map-actions"><a id="map-open" class="map-btn" href="#" target="_blank" rel="noopener">Open in OpenStreetMap ↗</a><a id="map-google" class="map-btn" href="#" target="_blank" rel="noopener noreferrer">Google Maps (gauge area, not an access point)</a></div></div><iframe id="river-map-frame" title="Map of selected river gauge" loading="lazy"></iframe><div class="map-attribution">Basemap © OpenStreetMap contributors. River observations come from USGS; the map is orientation context only.</div><p class="river-map-note">This point marks a USGS instrument, not a verified launch, parking area or river access. Map links show the gauge area, not driving directions.</p></div>
     <p class="small" id="updated"></p>
     <div class="river-switch-footer"><button id="choose-another-river" type="button" class="secondary-btn river-back-btn">← Choose another river</button></div>
   </div>
@@ -445,6 +447,7 @@ body[data-editorial-tool-ui] :focus-visible{outline:3px solid var(--editorial-gr
 </div></section>
 
 <script src="/assets/paddle-window.js"></script>
+<script src="/assets/river-viz.js?v=20261120"></script>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
  const N=window.NationalTools,form=document.getElementById("loc");
