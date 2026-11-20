@@ -51,7 +51,7 @@ test("historical scale uses only ordered USGS same-date percentile observations"
 
 test("river experience keeps canonical, source selection, status and useful fallback", () => {
   const html = fs.readFileSync(path.join(__dirname, "../public/national-tools/rivers/index.html"), "utf8");
-  assert.match(html, /id="river-field-station-experience"/);
+  assert.match(html, /\/assets\/river-experience\.css/);
   assert.match(html, /\/assets\/river-viz\.js/);
   assert.match(html, /river-flow-history/);
   assert.match(html, /river-historical-band/);
