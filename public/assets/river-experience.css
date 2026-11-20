@@ -1,0 +1,88 @@
+/* River Field Station | Experience Investment, November 2026.
+   River finding remains discovery-first; observations remain exact-site only. */
+body[data-editorial-tool-ui] .hero{padding-top:22px!important}
+body[data-editorial-tool-ui] .hero .breadcrumb{margin-bottom:12px!important}
+body[data-editorial-tool-ui] .hero h1{font-size:clamp(31px,4.2vw,44px)!important;line-height:1.13!important}
+body[data-editorial-tool-ui] .hero .lede{border:0!important;font-style:normal!important;font:16px/1.55 Georgia,serif!important;padding-bottom:3px!important;max-width:65ch!important}
+body[data-editorial-tool-ui] .river-workbench.section{padding-top:14px!important}
+body[data-editorial-tool-ui] .river-workbench .locator{border:0!important;border-radius:12px!important;background:#e8f0eb!important;padding:14px!important;grid-template-columns:minmax(0,1fr) auto auto!important;box-shadow:none!important}
+body[data-editorial-tool-ui] .river-workbench .locator input{background:#fff!important;border-color:#b9c9c1!important;border-radius:7px!important}
+body[data-editorial-tool-ui] .river-workbench .locator .btn{border-radius:7px!important;background:#205751!important;border-color:#205751!important}
+body[data-editorial-tool-ui] .river-workbench .locator .secondary-btn{border-radius:7px!important;background:#fff!important;border-color:#aac2b5!important;color:#21453e!important}
+body[data-editorial-tool-ui] .river-workbench .tool-nav{margin-top:16px!important;margin-bottom:0!important;opacity:.8}
+body[data-editorial-tool-ui] .river-workbench .near-me-note{margin-top:6px!important}
+.river-start-line{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;margin-bottom:8px}
+.river-start-line strong{font:700 12px/1.4 Arial,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#245a54}
+.river-start-line span{font:15px/1.4 Georgia,serif;color:#4c5f58}
+.river-quick-places{display:flex;align-items:center;flex-wrap:wrap;gap:7px 12px;margin:9px 0 5px;font:12px/1.5 Arial,sans-serif;color:#596a60}
+.river-quick-places button{font-size:13px!important;line-height:1.2!important;min-height:32px;border:1px solid #bfd1c4!important;background:transparent!important;color:#245751!important;border-radius:999px!important;padding:6px 11px!important}
+.river-quick-places button:hover{background:#e8f0eb!important}
+body[data-editorial-tool-ui] .river-workbench .result{padding:clamp(14px,3vw,26px)!important;border:0!important;border-top:4px solid #245b55!important;border-radius:11px!important;margin-top:18px!important;background:#fff!important}
+body[data-editorial-tool-ui] .river-workbench .answer{font:400 clamp(21px,3.1vw,30px)/1.25 Georgia,serif!important;max-width:34ch;margin:4px 0 10px!important}
+body[data-editorial-tool-ui] .river-discovery-controls{display:flex;align-items:end;flex-wrap:wrap;gap:12px 18px;padding:12px 0 17px;border-bottom:1px solid #e5e9e3}
+body[data-editorial-tool-ui] .river-discovery-controls label{flex:1 1 195px;font:700 11px/1.5 Arial,sans-serif;color:#4b635a;letter-spacing:.03em}
+body[data-editorial-tool-ui] .river-discovery-controls select,body[data-editorial-tool-ui] .river-discovery-controls input{display:block;width:100%;min-height:42px;padding:9px 11px;margin-top:5px;border:1px solid #b9c9c1;border-radius:6px;box-sizing:border-box;background:#fdfefc;color:#293b34;font:16px/1.2 Arial,sans-serif}
+body[data-editorial-tool-ui] .river-discovery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
+body[data-editorial-tool-ui] .river-choice-card{border:0!important;border-bottom:1px solid #dce6dd!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:18px 2px 20px!important;margin:0!important;min-width:0}
+body[data-editorial-tool-ui] .river-choice-head{display:flex;align-items:flex-start;gap:15px;justify-content:flex-start;flex-wrap:nowrap}
+body[data-editorial-tool-ui] .river-choice-head h3{font:400 clamp(19px,2.3vw,24px)/1.22 Georgia,serif!important;margin:0 0 5px!important;color:#183f38!important}
+.river-choice-copy{flex:1;min-width:0}
+.river-choice-copy .river-count{font:12px/1.4 Arial,sans-serif;color:#556f63}
+.river-distance{display:flex;flex:0 0 72px;flex-direction:column;align-items:flex-start;gap:1px;padding:4px 0 0;border-top:3px solid #427c70;color:#194942}
+.river-distance strong{font:600 25px/1.1 Georgia,serif;font-variant-numeric:tabular-nums}
+.river-distance span{font:11px/1.3 Arial,sans-serif;color:#576d62}
+.river-choice-card .monitoring-points{display:grid;gap:6px;margin-top:8px}
+body[data-editorial-tool-ui] .river-choice-card .monitoring-point{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;width:100%;text-align:left;padding:9px 11px!important;background:#eef3ee!important;border:1px solid transparent!important;border-radius:5px!important;color:#174e46!important;font:700 13px/1.4 Arial,sans-serif!important;cursor:pointer}
+body[data-editorial-tool-ui] .river-choice-card .monitoring-point:hover{border-color:#6b9c8b!important;background:#e4eee7!important}
+.river-choice-card .monitoring-point small{font-weight:400;color:#49665d;white-space:normal}
+body[data-editorial-tool-ui] .river-monitor-list{margin-top:12px}
+body[data-editorial-tool-ui] .river-monitor-list summary{color:#1a6256;cursor:pointer;font:700 13px/1.4 Arial,sans-serif;padding:9px 0}
+body[data-editorial-tool-ui] .river-detail-nav-sticky{position:static!important;display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 16px}
+body[data-editorial-tool-ui] .river-detail .river-back-btn{width:auto!important;padding:9px 14px!important}
+body[data-editorial-tool-ui] .river-card.primary{display:block!important;border:0!important;padding:0!important;background:#fff!important;box-shadow:none!important}
+body[data-editorial-tool-ui] .river-card .river-title{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:start;gap:8px}
+body[data-editorial-tool-ui] .river-card .river-title h3{font:400 clamp(22px,3vw,31px)/1.2 Georgia,serif!important;margin:5px 0 9px!important}
+body[data-editorial-tool-ui] .river-card .metrics{display:grid!important;grid-template-columns:minmax(0,1.7fr) repeat(2,minmax(0,1fr))!important;gap:0!important;margin:16px 0 18px!important;background:#eff4ef;border-radius:10px;overflow:hidden}
+body[data-editorial-tool-ui] .river-card .metrics .metric{border:0!important;border-radius:0!important;background:transparent!important;padding:17px 20px!important;border-left:1px solid #cbd9cd!important;min-width:0}
+body[data-editorial-tool-ui] .river-card .metrics .metric:first-child{border-left:0!important;background:#dfece4!important}
+body[data-editorial-tool-ui] .river-card .metrics b{display:block;font:400 clamp(20px,3vw,31px)/1.16 Georgia,serif!important;color:#173e39!important;white-space:normal;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+body[data-editorial-tool-ui] .river-card .metrics .river-flow-metric b{font-size:clamp(29px,4.2vw,46px)!important}
+body[data-editorial-tool-ui] .river-card .metrics span{display:block;margin-top:8px;color:#315a50!important;font:13px/1.35 Arial,sans-serif!important}
+.river-flow-history{margin:18px 0 22px;padding:14px 16px 10px;border:1px solid #d6e4d8;border-radius:9px;background:#fafcf9}
+.river-flow-history figcaption,.river-historical-band figcaption{display:flex;justify-content:space-between;gap:6px 18px;flex-wrap:wrap;align-items:baseline;margin-bottom:10px}
+.river-flow-history figcaption strong,.river-historical-band figcaption strong{font:700 15px/1.35 Arial,sans-serif;color:#153f3a}
+.river-flow-history figcaption span,.river-historical-band figcaption span{font:13px/1.45 Arial,sans-serif;color:#526a5c}
+.river-flow-history svg{width:100%;height:auto;display:block;max-height:230px;color:#185f56;overflow:visible}
+.river-flow-history .river-axis{stroke:#d0ddd3;stroke-width:1}
+.river-flow-history .river-axis-label{font:13px Arial,sans-serif;fill:#435c50;font-variant-numeric:tabular-nums}
+.river-flow-history .river-trace{fill:none;stroke:#1a6860;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.river-flow-history .river-endpoint{fill:#f8faf5;stroke:#125f56;stroke-width:3;vector-effect:non-scaling-stroke}
+.river-chart-foot{display:flex;justify-content:space-between;gap:9px 18px;flex-wrap:wrap;margin:5px 0 0;color:#607165;font:12px/1.45 Arial,sans-serif}
+.river-chart-empty{border-left:3px solid #cbd8ca;padding:10px 13px;margin:12px 0;color:#4c6256;font:14px/1.5 Arial,sans-serif}
+.river-historical-band{padding:16px;margin:18px 0;border:1px solid #d7e1d5;border-radius:9px;background:#fcfdfb}
+.river-band-track{position:relative;height:39px;margin:21px 9px 12px;border-top:1px solid #b6c8ba}
+.river-band-outer{position:absolute;top:8px;height:18px;border-radius:5px;background:#dfeade}
+.river-band-middle{position:absolute;top:8px;height:18px;border-radius:2px;background:#91b7a1}
+.river-band-median{position:absolute;top:4px;width:2px;height:26px;background:#46695c}
+.river-band-current{position:absolute;top:1px;width:3px;height:33px;background:#9b4d2d}
+.river-band-current:before{content:"";position:absolute;top:-6px;left:-4px;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid #9b4d2d}
+.river-band-legend{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 15px;color:#476357;font:12px/1.45 Arial,sans-serif;font-variant-numeric:tabular-nums}
+.river-band-note{margin:9px 0 0;font:12px/1.45 Arial,sans-serif;color:#56685b}
+.river-historical-band .river-historical-text{margin:9px 0 0;font:13px/1.5 Arial,sans-serif;color:#3b5448}
+body[data-editorial-tool-ui] .river-card .intel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}
+body[data-editorial-tool-ui] .river-card .intel-panel{margin:0!important;border:0!important;border-top:3px solid #4d8678!important;border-radius:0!important;padding:14px 2px!important;background:#fff!important}
+body[data-editorial-tool-ui] .river-card .lens-tab[aria-pressed="true"]{background:#1f6157!important;color:#fff!important;border-color:#1f6157!important}
+.river-map-shell .river-map-note{margin:8px 0 0;color:#52655b;font:12px/1.5 Arial,sans-serif}
+.river-no-js{margin-top:8px;font:13px/1.5 Arial,sans-serif;color:#465c50}
+@media(max-width:720px){
+body[data-editorial-tool-ui] .river-workbench .locator{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+body[data-editorial-tool-ui] .river-workbench .locator input{grid-column:1 / -1}
+body[data-editorial-tool-ui] .river-workbench .locator .btn,body[data-editorial-tool-ui] .river-workbench .locator .secondary-btn{min-width:0;width:100%!important;padding:9px 6px!important;font-size:13px!important}
+body[data-editorial-tool-ui] .river-discovery-grid{grid-template-columns:1fr}
+body[data-editorial-tool-ui] .river-card .metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body[data-editorial-tool-ui] .river-card .metrics .river-flow-metric{grid-column:1 / -1;border-left:0!important;border-bottom:1px solid #cbd9cd!important}
+body[data-editorial-tool-ui] .river-card .metrics .metric:nth-child(2){border-left:0!important}
+body[data-editorial-tool-ui] .river-card .intel-grid{grid-template-columns:1fr}
+}
+@media(max-width:380px){.river-distance{flex-basis:62px}.river-distance strong{font-size:22px}body[data-editorial-tool-ui] .river-card .metrics .metric{padding:12px!important}}
+@media(prefers-reduced-motion:reduce){.river-flow-history *{transition:none!important;animation:none!important}}
